@@ -6,18 +6,14 @@ import PostCard from '../components/PostCard';
 export default function Blog() {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedCategory = searchParams.get('category') as Category | null;
-  const searchQuery = searchParams.get('search') ?? '';
-
-  const allVisible = getVisiblePosts();
+  const searchQuery      = searchParams.get('search') ?? '';
+  const allVisible       = getVisiblePosts();
 
   const filtered = useMemo(() => {
     let result = [...allVisible].sort(
-      (a, b) =>
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
     );
-    if (selectedCategory) {
-      result = result.filter((p) => p.category === selectedCategory);
-    }
+    if (selectedCategory) result = result.filter((p) => p.category === selectedCategory);
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
@@ -32,96 +28,70 @@ export default function Blog() {
   }, [allVisible, selectedCategory, searchQuery]);
 
   const setCategory = (cat: Category | null) => {
-    const params = new URLSearchParams(searchParams);
-    if (cat) {
-      params.set('category', cat);
-    } else {
-      params.delete('category');
-    }
-    setSearchParams(params);
+    const p = new URLSearchParams(searchParams);
+    cat ? p.set('category', cat) : p.delete('category');
+    setSearchParams(p);
   };
 
   const clearSearch = () => {
-    const params = new URLSearchParams(searchParams);
-    params.delete('search');
-    setSearchParams(params);
+    const p = new URLSearchParams(searchParams);
+    p.delete('search');
+    setSearchParams(p);
   };
 
   return (
     <div className="py-12 space-y-8">
-      {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+        <h1 className="text-3xl font-bold font-serif text-ink-900 dark:text-parchment-100 tracking-tight">
           Blog
         </h1>
-        <p className="text-slate-500 dark:text-slate-400">
+        <p className="text-ink-400 dark:text-ink-500">
           {allVisible.length} posts on engineering, design, and life.
         </p>
       </div>
 
-      {/* Active search banner */}
       {searchQuery && (
-        <div className="flex items-center gap-2 px-4 py-2.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl text-sm">
-          <span className="text-amber-800 dark:text-amber-200">
-            Showing results for{' '}
-            <strong>"{searchQuery}"</strong> — {filtered.length} found
+        <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm
+                        bg-amber-50 dark:bg-amber-950/30
+                        border border-amber-200 dark:border-amber-800/50">
+          <span className="text-amber-900 dark:text-amber-200">
+            Showing results for <strong>"{searchQuery}"</strong> — {filtered.length} found
           </span>
-          <button
-            onClick={clearSearch}
-            className="ml-auto text-amber-600 dark:text-amber-400 hover:underline"
-          >
+          <button onClick={clearSearch}
+            className="ml-auto text-amber-700 dark:text-amber-400 hover:underline">
             Clear
           </button>
         </div>
       )}
 
-      {/* Category filter */}
+      {/* Category pills */}
       <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => setCategory(null)}
-          className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
-            !selectedCategory
-              ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-              : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
-          }`}
-        >
-          All
-        </button>
-        {CATEGORIES.map((cat) => (
+        {([null, ...CATEGORIES] as (Category | null)[]).map((cat) => (
           <button
-            key={cat}
+            key={cat ?? '__all'}
             onClick={() => setCategory(cat === selectedCategory ? null : cat)}
-            className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              selectedCategory === cat
-                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
+            className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors
+              border ${
+              (cat === null && !selectedCategory) || cat === selectedCategory
+                ? 'bg-ink-900 text-parchment-100 border-ink-900 dark:bg-parchment-100 dark:text-ink-900 dark:border-parchment-100'
+                : 'bg-parchment-50 text-ink-600 border-parchment-300 hover:bg-parchment-200 dark:bg-ink-900 dark:text-ink-300 dark:border-ink-700 dark:hover:bg-ink-800'
             }`}
           >
-            {cat}
+            {cat ?? 'All'}
           </button>
         ))}
       </div>
 
-      {/* Posts grid */}
       {filtered.length > 0 ? (
         <div className="grid sm:grid-cols-2 gap-4">
-          {filtered.map((post) => (
-            <PostCard key={post.slug} post={post} />
-          ))}
+          {filtered.map((post) => <PostCard key={post.slug} post={post} />)}
         </div>
       ) : (
         <div className="text-center py-20 space-y-3">
-          <p className="text-4xl">🔍</p>
-          <p className="text-slate-600 dark:text-slate-400 font-medium">
-            No posts found
-          </p>
-          <p className="text-sm text-slate-400 dark:text-slate-500">
-            Try a different category or search term.
-          </p>
-          <Link
-            to="/blog"
-            className="inline-block mt-2 text-indigo-500 hover:underline text-sm"
-          >
+          <p className="text-4xl">📖</p>
+          <p className="font-medium text-ink-600 dark:text-ink-300">No posts found</p>
+          <p className="text-sm text-ink-400 dark:text-ink-500">Try a different category or search term.</p>
+          <Link to="/blog" className="inline-block mt-2 text-amber-700 dark:text-amber-400 hover:underline text-sm">
             Clear all filters
           </Link>
         </div>
