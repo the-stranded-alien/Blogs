@@ -1,15 +1,29 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
-import { getPostBySlug, posts, CATEGORY_COLORS } from '../data/posts';
+import {
+  getPostBySlug,
+  getVisiblePosts,
+  getSeriesPosts,
+  CATEGORY_COLORS,
+} from '../data/posts';
 import PostCard from '../components/PostCard';
 
 export default function Post() {
   const { slug } = useParams<{ slug: string }>();
   const post = slug ? getPostBySlug(slug) : undefined;
 
+  // Redirect external-URL posts
+  useEffect(() => {
+    if (post?.externalUrl) {
+      window.location.replace(post.externalUrl);
+    }
+  }, [post]);
+
   if (!post) return <Navigate to="/blog" replace />;
+  if (post.externalUrl) return null; // being redirected
 
   const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -17,8 +31,25 @@ export default function Post() {
     day: 'numeric',
   });
 
-  const related = posts
-    .filter((p) => p.id !== post.id && p.category === post.category)
+  const formattedUpdated = post.updatedAt
+    ? new Date(post.updatedAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : null;
+
+  const isWip = post.status === 'in-progress';
+
+  // Series navigation
+  const seriesPosts = post.series ? getSeriesPosts(post.series) : [];
+  const seriesIndex = seriesPosts.findIndex((p) => p.slug === post.slug);
+  const prevInSeries = seriesIndex > 0 ? seriesPosts[seriesIndex - 1] : null;
+  const nextInSeries =
+    seriesIndex < seriesPosts.length - 1 ? seriesPosts[seriesIndex + 1] : null;
+
+  const related = getVisiblePosts()
+    .filter((p) => p.slug !== post.slug && p.category === post.category)
     .slice(0, 2);
 
   return (
@@ -38,6 +69,21 @@ export default function Post() {
         </span>
       </nav>
 
+      {/* WIP banner */}
+      {isWip && (
+        <div className="mb-8 flex items-start gap-3 px-4 py-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl text-sm">
+          <span className="text-amber-500 mt-0.5 shrink-0">⚠</span>
+          <div>
+            <p className="font-medium text-amber-800 dark:text-amber-200">
+              Work in progress
+            </p>
+            <p className="text-amber-700 dark:text-amber-300 mt-0.5">
+              This post is still being written. Content may be incomplete or change.
+            </p>
+          </div>
+        </div>
+      )}
+
       <article className="max-w-2xl mx-auto">
         {/* Post header */}
         <header className="mb-10 space-y-4">
@@ -48,6 +94,11 @@ export default function Post() {
             >
               {post.category}
             </Link>
+            {isWip && (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                In Progress
+              </span>
+            )}
             {post.tags.map((tag) => (
               <span
                 key={tag}
@@ -58,7 +109,13 @@ export default function Post() {
             ))}
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white leading-tight">
+          {post.series && (
+            <p className="text-sm text-slate-400 dark:text-slate-500">
+              {post.series}{post.part !== undefined ? ` · Part ${post.part}` : ''}
+            </p>
+          )}
+
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white leading-tight tracking-tight">
             {post.title}
           </h1>
 
@@ -76,6 +133,12 @@ export default function Post() {
               </p>
               <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                 <time>{formattedDate}</time>
+                {formattedUpdated && (
+                  <>
+                    <span>·</span>
+                    <span>Updated {formattedUpdated}</span>
+                  </>
+                )}
                 <span>·</span>
                 <span>{post.readingTime} min read</span>
               </div>
@@ -106,6 +169,39 @@ export default function Post() {
           </div>
         </div>
 
+        {/* Series navigation */}
+        {seriesPosts.length > 1 && (
+          <div className="mt-8 p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+              {post.series}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-2">
+              {prevInSeries && (
+                <Link
+                  to={`/blog/${prevInSeries.slug}`}
+                  className="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors text-sm"
+                >
+                  <span className="text-slate-400">←</span>
+                  <span className="text-slate-600 dark:text-slate-300 line-clamp-1">
+                    {prevInSeries.title}
+                  </span>
+                </Link>
+              )}
+              {nextInSeries && (
+                <Link
+                  to={`/blog/${nextInSeries.slug}`}
+                  className="flex-1 flex items-center justify-end gap-2 px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors text-sm"
+                >
+                  <span className="text-slate-600 dark:text-slate-300 line-clamp-1">
+                    {nextInSeries.title}
+                  </span>
+                  <span className="text-slate-400">→</span>
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Share + back */}
         <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <Link
@@ -116,9 +212,9 @@ export default function Post() {
           </Link>
           <button
             onClick={() => {
-              navigator.clipboard.writeText(window.location.href);
+              void navigator.clipboard.writeText(window.location.href);
             }}
-            className="flex items-center gap-1.5 text-sm text-indigo-500 dark:text-indigo-400 hover:underline"
+            className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
           >
             <LinkIcon />
             Copy link
@@ -134,7 +230,7 @@ export default function Post() {
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {related.map((p) => (
-              <PostCard key={p.id} post={p} />
+              <PostCard key={p.slug} post={p} />
             ))}
           </div>
         </section>

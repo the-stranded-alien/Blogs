@@ -1,0 +1,85 @@
+{
+  "posts": [
+    {
+      "slug": "building-scalable-systems",
+      "title": "Building Scalable Systems: Lessons from the Trenches",
+      "excerpt": "After years of building systems that serve millions of users, here are the most important lessons I've learned about scalability, reliability, and making the right trade-offs.",
+      "category": "Engineering",
+      "tags": ["architecture", "scalability", "distributed systems"],
+      "publishedAt": "2026-02-20",
+      "readingTime": 8,
+      "featured": true,
+      "status": "published",
+      "accentColor": "violet",
+      "series": "System Design 101",
+      "part": 1
+    },
+    {
+      "slug": "switching-to-typescript",
+      "title": "Why I Switched to TypeScript and Never Looked Back",
+      "excerpt": "TypeScript has fundamentally changed how I write JavaScript. Here's an honest look at the migration experience and why the trade-offs are worth it.",
+      "category": "Technology",
+      "tags": ["typescript", "javascript", "developer experience"],
+      "publishedAt": "2026-02-10",
+      "readingTime": 6,
+      "featured": true,
+      "status": "published",
+      "accentColor": "sky"
+    },
+    {
+      "slug": "design-systems-investment",
+      "title": "Design Systems: The Investment That Keeps Paying Off",
+      "excerpt": "Building a design system feels like a big upfront cost. Here's why it's one of the highest ROI investments a product team can make.",
+      "category": "Design",
+      "tags": ["design system", "ui", "component library", "product"],
+      "publishedAt": "2026-01-28",
+      "readingTime": 5,
+      "status": "published",
+      "accentColor": "pink"
+    },
+    {
+      "slug": "getting-started-react-query",
+      "title": "Getting Started with React Query: A Practical Guide",
+      "excerpt": "React Query transforms how you manage server state in React apps. This practical guide walks through the core concepts with real examples.",
+      "category": "Tutorial",
+      "tags": ["react", "react-query", "state management", "typescript"],
+      "publishedAt": "2026-01-15",
+      "readingTime": 10,
+      "status": "published",
+      "accentColor": "orange"
+    },
+    {
+      "slug": "career-lessons",
+      "title": "Five Career Lessons I Wish I Had Learned Earlier",
+      "excerpt": "A decade into my software engineering career, here are the five lessons that would have accelerated my growth if I'd understood them on day one.",
+      "category": "Career",
+      "tags": ["career", "growth", "engineering", "soft skills"],
+      "publishedAt": "2025-12-20",
+      "readingTime": 7,
+      "status": "published",
+      "accentColor": "amber"
+    },
+    {
+      "slug": "finding-stillness",
+      "title": "Finding Stillness in a World That Rewards Busyness",
+      "excerpt": "We live in a culture that celebrates busyness. Here's what I've learned about the counterintuitive practice of doing less to achieve more.",
+      "category": "Life",
+      "tags": ["mindfulness", "productivity", "wellbeing", "focus"],
+      "publishedAt": "2025-12-05",
+      "readingTime": 4,
+      "status": "published",
+      "accentColor": "emerald"
+    },
+    {
+      "slug": "ai-in-software-development",
+      "title": "The Future of AI in Software Development",
+      "excerpt": "AI coding tools are transforming the developer workflow. I'm exploring what this means for how we design, build, and ship software — and what it means for us as engineers.",
+      "category": "Technology",
+      "tags": ["ai", "developer tools", "future", "llm"],
+      "publishedAt": "2026-02-26",
+      "readingTime": 6,
+      "status": "in-progress",
+      "accentColor": "indigo"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { posts, CATEGORIES, type Category } from '../data/posts';
+import { getVisiblePosts, CATEGORIES, type Category } from '../data/posts';
 import PostCard from '../components/PostCard';
 
 export default function Blog() {
@@ -8,8 +8,10 @@ export default function Blog() {
   const selectedCategory = searchParams.get('category') as Category | null;
   const searchQuery = searchParams.get('search') ?? '';
 
+  const allVisible = getVisiblePosts();
+
   const filtered = useMemo(() => {
-    let result = [...posts].sort(
+    let result = [...allVisible].sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
     );
@@ -27,7 +29,7 @@ export default function Blog() {
       );
     }
     return result;
-  }, [selectedCategory, searchQuery]);
+  }, [allVisible, selectedCategory, searchQuery]);
 
   const setCategory = (cat: Category | null) => {
     const params = new URLSearchParams(searchParams);
@@ -49,11 +51,11 @@ export default function Blog() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-8">
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
           Blog
         </h1>
         <p className="text-slate-500 dark:text-slate-400">
-          {posts.length} posts on engineering, design, and life.
+          {allVisible.length} posts on engineering, design, and life.
         </p>
       </div>
 
@@ -77,7 +79,7 @@ export default function Blog() {
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setCategory(null)}
-          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+          className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
             !selectedCategory
               ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
               : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
@@ -89,7 +91,7 @@ export default function Blog() {
           <button
             key={cat}
             onClick={() => setCategory(cat === selectedCategory ? null : cat)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
               selectedCategory === cat
                 ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
@@ -104,7 +106,7 @@ export default function Blog() {
       {filtered.length > 0 ? (
         <div className="grid sm:grid-cols-2 gap-4">
           {filtered.map((post) => (
-            <PostCard key={post.id} post={post} />
+            <PostCard key={post.slug} post={post} />
           ))}
         </div>
       ) : (
