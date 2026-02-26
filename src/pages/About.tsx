@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default function About() {
   return (
     <div className="py-12">
-      <div className="max-w-[720px] mx-auto space-y-12">
+      <div className="space-y-12">
 
         {/* Profile */}
         <section className="flex flex-col sm:flex-row gap-6 items-start">

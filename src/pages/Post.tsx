@@ -145,7 +145,7 @@ export default function Post() {
 
       <div className="py-12">
         {/* ── Reading column ─────────────────────────────────────── */}
-        <div className="max-w-[720px] mx-auto">
+        <div>
 
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-ink-400 dark:text-ink-400 mb-10">
