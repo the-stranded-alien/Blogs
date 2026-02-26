@@ -84,7 +84,7 @@ export default function Post() {
         </div>
       )}
 
-      <article className="max-w-2xl mx-auto">
+      <article>
         {/* Post header */}
         <header className="mb-10 space-y-4">
           <div className="flex items-center gap-2 flex-wrap">
