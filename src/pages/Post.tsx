@@ -53,7 +53,7 @@ export default function Post() {
     .slice(0, 2);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <div className="w-[80%] mx-auto py-12">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-8">
         <Link to="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">

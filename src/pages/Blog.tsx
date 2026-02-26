@@ -48,7 +48,7 @@ export default function Blog() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-8">
+    <div className="w-[80%] mx-auto py-12 space-y-8">
       {/* Header */}
       <div className="space-y-1">
         <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">

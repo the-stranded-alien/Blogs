@@ -5,7 +5,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-slate-200 dark:border-slate-800 mt-auto">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="w-[80%] mx-auto py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="text-sm text-slate-500 dark:text-slate-500">
           © {year} Sahil Gupta. All rights reserved.
         </div>
