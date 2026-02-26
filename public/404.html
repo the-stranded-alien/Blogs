@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sahil.blog</title>
+    <script>
+      // GitHub Pages SPA routing redirect
+      // Stores the path in sessionStorage and redirects to index.html
+      const path = window.location.pathname;
+      const base = '/Blogs';
+      const rest = path.startsWith(base) ? path.slice(base.length) : path;
+      sessionStorage.setItem('redirect', rest + window.location.search);
+      window.location.replace(base + '/');
+    </script>
+  </head>
+  <body></body>
+</html>

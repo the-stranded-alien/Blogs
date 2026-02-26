@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased;
+    font-family: var(--font-sans);
+    margin: 0;
+    min-height: 100vh;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Prose styles for blog content */
+  .prose-blog {
+    @apply text-slate-800 dark:text-slate-200;
+  }
+
+  .prose-blog h1 {
+    @apply text-3xl font-bold mt-8 mb-4 text-slate-900 dark:text-white;
+  }
+
+  .prose-blog h2 {
+    @apply text-2xl font-bold mt-8 mb-3 text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-2;
+  }
+
+  .prose-blog h3 {
+    @apply text-xl font-semibold mt-6 mb-2 text-slate-900 dark:text-white;
+  }
+
+  .prose-blog p {
+    @apply mb-4 leading-7;
+  }
+
+  .prose-blog a {
+    @apply text-indigo-600 dark:text-indigo-400 underline underline-offset-2 hover:text-indigo-800 dark:hover:text-indigo-300;
+  }
+
+  .prose-blog ul {
+    @apply list-disc list-outside pl-6 mb-4 space-y-1;
+  }
+
+  .prose-blog ol {
+    @apply list-decimal list-outside pl-6 mb-4 space-y-1;
+  }
+
+  .prose-blog li {
+    @apply leading-7;
+  }
+
+  .prose-blog blockquote {
+    @apply border-l-4 border-indigo-400 dark:border-indigo-500 pl-4 py-1 my-4 italic text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 rounded-r-md;
+  }
+
+  .prose-blog pre {
+    @apply bg-slate-900 dark:bg-slate-800 rounded-xl p-4 overflow-x-auto my-6 text-sm leading-6;
+  }
+
+  .prose-blog code {
+    @apply font-mono text-sm;
+  }
+
+  .prose-blog pre code {
+    @apply text-slate-100 bg-transparent p-0;
+  }
+
+  .prose-blog :not(pre) > code {
+    @apply bg-slate-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+
+  .prose-blog img {
+    @apply rounded-xl my-6 max-w-full;
+  }
+
+  .prose-blog hr {
+    @apply border-slate-200 dark:border-slate-700 my-8;
+  }
+
+  .prose-blog table {
+    @apply w-full border-collapse my-6 text-sm;
+  }
+
+  .prose-blog th {
+    @apply bg-slate-100 dark:bg-slate-800 font-semibold text-left px-4 py-2 border border-slate-200 dark:border-slate-700;
+  }
+
+  .prose-blog td {
+    @apply px-4 py-2 border border-slate-200 dark:border-slate-700;
+  }
+
+  .prose-blog tr:nth-child(even) {
+    @apply bg-slate-50 dark:bg-slate-800/30;
+  }
+}
