@@ -168,12 +168,12 @@
       repeating-linear-gradient(
         45deg,
         transparent 0px, transparent 19px,
-        rgba(100, 76, 44, 0.12) 19px, rgba(100, 76, 44, 0.12) 20px
+        rgba(100, 76, 44, 0.17) 19px, rgba(100, 76, 44, 0.17) 20px
       ),
       repeating-linear-gradient(
         135deg,
         transparent 0px, transparent 19px,
-        rgba(100, 76, 44, 0.12) 19px, rgba(100, 76, 44, 0.12) 20px
+        rgba(100, 76, 44, 0.17) 19px, rgba(100, 76, 44, 0.17) 20px
       );
     background-size: 200px 200px, 100% 100%, 100% 100%, 24px 24px, 24px 24px;
     background-repeat: repeat, no-repeat, no-repeat, repeat, repeat;
