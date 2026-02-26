@@ -6,12 +6,8 @@
     <title>sahil.blog</title>
     <script>
       // GitHub Pages SPA routing redirect
-      // Stores the path in sessionStorage and redirects to index.html
-      const path = window.location.pathname;
-      const base = '/Blogs';
-      const rest = path.startsWith(base) ? path.slice(base.length) : path;
-      sessionStorage.setItem('redirect', rest + window.location.search);
-      window.location.replace(base + '/');
+      sessionStorage.setItem('redirect', window.location.pathname + window.location.search);
+      window.location.replace('/');
     </script>
   </head>
   <body></body>

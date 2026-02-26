@@ -25,7 +25,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: '/Blogs',
+    basename: '/',
   }
 );
 
