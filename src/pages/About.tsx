@@ -50,7 +50,7 @@ export default function About() {
                            bg-parchment-50 dark:bg-ink-900
                            border border-parchment-300 dark:border-ink-800
                            hover:border-parchment-400 dark:hover:border-ink-700
-                           shadow-[0_1px_4px_rgba(44,26,14,0.05)] dark:shadow-none">
+                           shadow-[0_1px_4px_rgba(0,0,0,0.05)] dark:shadow-none">
                 <div className="font-medium font-serif text-sm mb-1
                                 text-ink-900 dark:text-parchment-100
                                 group-hover:text-amber-700 dark:group-hover:text-amber-400
@@ -107,9 +107,12 @@ export default function About() {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-ink-400 dark:text-ink-500">
-      {children}
-    </h2>
+    <div className="flex items-center gap-3">
+      <h2 className="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-ink-400 dark:text-ink-600 shrink-0">
+        {children}
+      </h2>
+      <span className="flex-1 h-px bg-parchment-300 dark:bg-ink-800" />
+    </div>
   );
 }
 

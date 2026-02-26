@@ -7,98 +7,130 @@ export default function Home() {
   const recent   = getRecentPosts(6);
 
   return (
-    <div className="py-12 space-y-16">
+    <div className="py-10 space-y-20">
 
-      {/* Hero */}
-      <section className="space-y-5 pt-4">
-        <div className="inline-flex items-center gap-2
-                        bg-amber-100/70 dark:bg-amber-950/40
-                        text-amber-800 dark:text-amber-400
-                        border border-amber-200/80 dark:border-amber-800/40
-                        px-3 py-1 rounded-full text-xs font-medium tracking-wide">
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-          Writing about things I find interesting
+      {/* ── Hero ─────────────────────────────────────────────────── */}
+      <section className="relative">
+        {/* Editorial masthead line */}
+        <div className="flex items-center gap-4 mb-10">
+          <span className="text-[0.58rem] font-mono font-bold uppercase tracking-[0.28em] text-ink-400 dark:text-ink-600 shrink-0">
+            Est. 2026
+          </span>
+          <span className="flex-1 h-px bg-parchment-300 dark:bg-ink-800" />
+          <span className="text-[0.58rem] font-mono font-bold uppercase tracking-[0.28em] text-ink-400 dark:text-ink-600 shrink-0">
+            Vol. I
+          </span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-bold font-serif
+        {/* Large headline */}
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-serif
                        text-ink-900 dark:text-parchment-100
-                       leading-tight tracking-tight">
-          Engineering, design,
+                       leading-[1.05] tracking-tight mb-8">
+          Engineering,{' '}
+          <span className="italic text-ink-400 dark:text-ink-500">design,</span>
           <br />
-          <span className="italic text-ink-400 dark:text-ink-500">and everything between.</span>
+          <span className="italic text-ink-400 dark:text-ink-500">&amp; everything</span>
+          <br />
+          between.
         </h1>
 
-        <p className="text-lg text-ink-500 dark:text-ink-300 max-w-lg leading-relaxed">
+        {/* Gold ornamental divider */}
+        <div className="flex items-center gap-3 mb-8">
+          <span className="h-px w-12 bg-[#C4A04A]" />
+          <span className="text-[#C4A04A] text-base select-none animate-float">✦</span>
+          <span className="h-px w-12 bg-[#C4A04A]" />
+        </div>
+
+        <p className="text-lg text-ink-500 dark:text-ink-300 max-w-xl leading-relaxed mb-8">
           A personal blog by Sahil Gupta — software engineering, technology,
           design, and the occasional life reflection.
         </p>
 
-        <div className="flex items-center gap-3 pt-1">
+        <div className="flex items-center gap-3">
           <Link to="/blog"
-            className="px-5 py-2.5 rounded-full font-medium text-sm transition-colors
-                       bg-ink-900 hover:bg-ink-800
+            className="px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-200
+                       bg-ink-900 hover:bg-ink-800 hover:shadow-lg
                        dark:bg-parchment-100 dark:hover:bg-parchment-200
                        text-parchment-100 dark:text-ink-900">
             Read the blog
           </Link>
           <Link to="/about"
-            className="px-5 py-2.5 rounded-full font-medium text-sm transition-colors
+            className="px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-200
                        border border-parchment-300 dark:border-ink-700
-                       hover:bg-parchment-200 dark:hover:bg-ink-800
+                       hover:border-parchment-400 dark:hover:border-ink-600
+                       hover:bg-parchment-100 dark:hover:bg-ink-800
                        text-ink-700 dark:text-ink-300">
             About me
           </Link>
         </div>
       </section>
 
-      {/* Featured */}
+      {/* ── Featured ─────────────────────────────────────────────── */}
       {featured.length > 0 && (
-        <section className="space-y-5">
+        <section className="space-y-6">
           <SectionLabel>Featured</SectionLabel>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-5">
             {featured.map((post) => <PostCard key={post.slug} post={post} featured />)}
           </div>
         </section>
       )}
 
-      {/* Topics */}
-      <section className="space-y-4">
+      {/* ── Topics ───────────────────────────────────────────────── */}
+      <section className="space-y-5">
         <SectionLabel>Browse by topic</SectionLabel>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
           {CATEGORIES.map((cat) => (
             <Link key={cat} to={`/blog?category=${cat}`}
-              className="px-4 py-1.5 rounded-full text-sm font-medium transition-colors
-                         bg-parchment-200 hover:bg-parchment-300
-                         dark:bg-ink-800 dark:hover:bg-ink-700
-                         text-ink-700 dark:text-ink-300
-                         border border-parchment-300 dark:border-ink-700">
-              {cat}
+              className="group flex items-center justify-between px-4 py-3 rounded-xl
+                         bg-parchment-100 dark:bg-ink-900
+                         border border-parchment-300 dark:border-ink-800
+                         hover:border-parchment-400 dark:hover:border-ink-700
+                         transition-all duration-200 hover:-translate-y-0.5
+                         shadow-[0_1px_4px_rgba(0,0,0,0.04)]
+                         hover:shadow-[0_6px_16px_rgba(0,0,0,0.08)]
+                         dark:shadow-none">
+              <span className="text-sm font-medium text-ink-700 dark:text-ink-300
+                               group-hover:text-ink-900 dark:group-hover:text-ink-100 transition-colors">
+                {cat}
+              </span>
+              <span className="text-ink-400 dark:text-ink-600 text-sm
+                               group-hover:translate-x-0.5 transition-transform">
+                →
+              </span>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Recent */}
-      <section className="space-y-5">
-        <div className="flex items-center justify-between">
-          <SectionLabel>Recent posts</SectionLabel>
+      {/* ── Recent posts ─────────────────────────────────────────── */}
+      <section className="space-y-6">
+        <div className="flex items-center gap-3">
+          <span className="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-ink-400 dark:text-ink-600">
+            Recent posts
+          </span>
+          <span className="flex-1 h-px bg-parchment-300 dark:bg-ink-800" />
           <Link to="/blog"
-            className="text-sm text-ink-400 dark:text-ink-500 hover:text-ink-800 dark:hover:text-ink-100 transition-colors">
+            className="text-xs font-medium text-ink-400 dark:text-ink-500
+                       hover:text-ink-800 dark:hover:text-ink-100 transition-colors shrink-0">
             View all →
           </Link>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {recent.map((post) => <PostCard key={post.slug} post={post} />)}
         </div>
       </section>
+
     </div>
   );
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-ink-400 dark:text-ink-500">
-      {children}
-    </h2>
+    <div className="flex items-center gap-3">
+      <span className="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-ink-400 dark:text-ink-600 shrink-0">
+        {children}
+      </span>
+      <span className="flex-1 h-px bg-parchment-300 dark:bg-ink-800" />
+    </div>
   );
 }

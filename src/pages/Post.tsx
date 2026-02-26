@@ -48,6 +48,7 @@ function ReadingProgress() {
 function CodeBlock({ language, children }: { language: string; children: string }) {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const isSepia = theme === 'sepia';
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
@@ -96,7 +97,7 @@ function CodeBlock({ language, children }: { language: string; children: string 
           padding: '1.25rem 1.5rem',
           fontSize: '0.84rem',
           lineHeight: '1.7',
-          background: isDark ? '#111009' : '#F8F6F1',
+          background: isDark ? '#111009' : isSepia ? '#E8DFCB' : '#F8F6F1',
         }}
       >
         {children}

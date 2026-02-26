@@ -8,7 +8,7 @@
   --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Ivory — aged warm whites, like quality book pages (light mode) */
+  /* Ivory — aged warm whites (light mode surfaces & dark mode text) */
   --color-parchment-50:  #F3F0E8;
   --color-parchment-100: #E9E5DC;
   --color-parchment-200: #DAD5CA;
@@ -16,7 +16,7 @@
   --color-parchment-400: #979390;
   --color-parchment-500: #6E6B68;
 
-  /* Antique Charcoal — warm dark greys, like old iron type or weathered stone */
+  /* Antique Charcoal — warm dark greys (dark mode surfaces & light mode text) */
   --color-ink-50:  #E4E2DD;
   --color-ink-100: #CCC9C3;
   --color-ink-200: #ADAAA4;
@@ -28,6 +28,54 @@
   --color-ink-800: #1A1917;
   --color-ink-900: #111009;
   --color-ink-950: #0B0906;
+
+  /* Gold accent */
+  --color-gold: #C4A04A;
+}
+
+/* ─── Sepia mode — warm cream reading palette ──────────────────── */
+/*
+ * Applied when <html class="sepia">. Because Tailwind v4 declares @theme
+ * variables on :root, overriding them here (same specificity, later in
+ * cascade) causes all parchment-* / ink-* utility classes to resolve to
+ * the sepia values automatically — no per-component changes needed.
+ *
+ * Target feel: Kindle / Instapaper sepia — desaturated warm cream,
+ * not yellow. Low contrast glare, high readability.
+ */
+.sepia {
+  color-scheme: light;
+
+  /* Backgrounds: soft warm cream — subtle, not golden */
+  --color-parchment-50:  #F2EBD9;
+  --color-parchment-100: #E8DFCB;
+  --color-parchment-200: #D6CCBA;
+  --color-parchment-300: #B0A08A;  /* borders — noticeably more visible */
+  --color-parchment-400: #8E7C68;
+  --color-parchment-500: #6A5C4A;
+
+  /* Text: warm dark brown — readable without harshness */
+  --color-ink-50:  #DDD3C4;
+  --color-ink-100: #C6BAA8;
+  --color-ink-200: #A89278;
+  --color-ink-300: #8A7258;
+  --color-ink-400: #7A6040;  /* muted text — richer, warmer */
+  --color-ink-500: #5C4628;
+  --color-ink-600: #40301A;
+  --color-ink-700: #2E2010;
+  --color-ink-800: #1E1408;
+  --color-ink-900: #150E04;
+  --color-ink-950: #0C0802;
+}
+
+/* ─── Animations ────────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); opacity: 0.9; }
+  50%       { transform: translateY(-4px); opacity: 1; }
+}
+@keyframes shimmer {
+  0%   { background-position: -400% center; }
+  100% { background-position:  400% center; }
 }
 
 /* ─── Base ─────────────────────────────────────────────────────── */
@@ -37,7 +85,29 @@
 
   html { @apply scroll-smooth; }
 
-  /* Paper grain SVG — used in both mode background stacks */
+  /* ── Text selection — antique gold tint ─────────────────────── */
+  ::selection {
+    background: rgba(196, 160, 74, 0.22);
+    color: inherit;
+  }
+
+  /* ── Focus ring — gold ──────────────────────────────────────── */
+  :focus-visible {
+    outline: 2px solid rgba(196, 160, 74, 0.7);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* ── Floating ornament utility ──────────────────────────────── */
+  .animate-float {
+    animation: float 3.5s ease-in-out infinite;
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     BODY BACKGROUND
+     Light: ruled stationery paper + warm lamp glow + grain
+     Dark:  gold dot grid + crown glow + deep vignette + grain
+  ───────────────────────────────────────────────────────────── */
   body {
     @apply bg-parchment-50 text-ink-800 dark:bg-ink-950 dark:text-ink-50 antialiased;
     font-family: var(--font-sans);
@@ -46,42 +116,82 @@
     transition: background-color 0.4s ease, color 0.3s ease;
 
     /*
-     * Light mode: aged ivory paper feel
-     * Layer 1 (top): paper grain noise — subtle texture
-     * Layer 2: page vignette — edges darker like holding a physical book
-     * Layer 3: reading lamp warmth — glow from upper-left
+     * Light mode layers (top → bottom):
+     * 1. Paper grain noise  — texture
+     * 2. Warm amber lamp    — top-left reading glow
+     * 3. Cool edge balance  — bottom-right subtle tint
+     * 4. Ruled lines        — horizontal stationery lines every 32px
      */
     background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
-      radial-gradient(ellipse 120% 100% at 50% 50%, transparent 40%, rgba(30, 20, 10, 0.12) 100%),
-      radial-gradient(ellipse 75% 55% at 15% 0%,   rgba(200, 165, 80, 0.10)  0%, transparent 65%);
-    background-size: 200px 200px, 100%, 100%;
-    background-repeat: repeat, no-repeat, no-repeat;
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse 70% 60% at 8%  0%,   rgba(210, 165, 60, 0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 92% 100%,  rgba(160, 140, 200, 0.07) 0%, transparent 70%),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 31px,
+        rgba(120, 90, 30, 0.075) 31px, rgba(120, 90, 30, 0.075) 32px
+      );
+    background-size: 200px 200px, 100% 100%, 100% 100%, 100% 100%;
+    background-repeat: repeat, no-repeat, no-repeat, no-repeat;
   }
 
-  /* Dark mode: deep antique charcoal — like a leather-bound book spine */
+  /*
+   * Dark mode layers (top → bottom):
+   * 1. Paper grain noise  — texture
+   * 2. Crown glow         — warm gold at top-centre, like candlelight
+   * 3. Deep vignette      — heavy shadow at edges, bright reading zone in centre
+   * 4. Gold dot grid      — 26px repeating dot pattern for depth/texture
+   */
   .dark body {
     background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E"),
-      radial-gradient(ellipse 120% 100% at 50% 50%, transparent 25%, rgba(0, 0, 0, 0.5) 100%),
-      radial-gradient(ellipse 70% 45% at 50% 0%,  rgba(55, 45, 25, 0.22) 0%, transparent 65%);
-    background-size: 200px 200px, 100%, 100%;
-    background-repeat: repeat, no-repeat, no-repeat;
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2020/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse 80% 50% at 50% 0%,   rgba(196, 150, 50, 0.21) 0%, transparent 65%),
+      radial-gradient(ellipse 130% 100% at 50% 50%, transparent 25%, rgba(0, 0, 0, 0.62) 100%),
+      radial-gradient(circle, rgba(196, 160, 74, 0.075) 1px, transparent 1px);
+    background-size: 200px 200px, 100% 100%, 100% 100%, 26px 26px;
+    background-repeat: repeat, no-repeat, no-repeat, repeat;
   }
 
-  /* ── Custom scrollbar ────────────────────────────────────────── */
-  ::-webkit-scrollbar       { width: 5px; height: 5px; }
+  /*
+   * Sepia mode layers (top → bottom):
+   * 1. Paper grain        — subtle organic texture
+   * 2. Warm lamp glow     — soft amber warmth from top-left
+   * 3. Depth tint         — gentle shadow at bottom-right
+   * 4. Diagonal crosshatch ╱ — faint 45° lines, like handmade paper
+   * 5. Diagonal crosshatch ╲ — the other axis, completes the weave
+   */
+  .sepia body {
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse 70% 55% at 10% 0%,    rgba(170, 130, 70, 0.16) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 90% 100%,  rgba(130, 100, 50, 0.09) 0%, transparent 65%),
+      repeating-linear-gradient(
+        45deg,
+        transparent 0px, transparent 19px,
+        rgba(100, 76, 44, 0.07) 19px, rgba(100, 76, 44, 0.07) 20px
+      ),
+      repeating-linear-gradient(
+        135deg,
+        transparent 0px, transparent 19px,
+        rgba(100, 76, 44, 0.07) 19px, rgba(100, 76, 44, 0.07) 20px
+      );
+    background-size: 200px 200px, 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+    background-repeat: repeat, no-repeat, no-repeat, repeat, repeat;
+  }
+
+  /* ── Custom scrollbar — thin antique gold ───────────────────── */
+  ::-webkit-scrollbar       { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    @apply bg-parchment-400 dark:bg-ink-700;
+    background: linear-gradient(to bottom, #B8943A, #C4A04A);
     border-radius: 99px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-parchment-500 dark:bg-ink-600;
+    background: linear-gradient(to bottom, #C4A04A, #D4B460);
   }
 
   /* ══════════════════════════════════════════════════════════════
-     PROSE — book / typeset reading styles
+     PROSE — typeset reading styles
   ══════════════════════════════════════════════════════════════ */
 
   .prose-blog {
@@ -89,6 +199,7 @@
     font-family: var(--font-serif);
     font-size: 1.125rem;
     line-height: 1.9;
+    text-rendering: optimizeLegibility;
   }
 
   /* Headings */
@@ -127,7 +238,7 @@
   /* Paragraphs */
   .prose-blog p { @apply mb-6; }
 
-  /* Links — warm amber annotation style */
+  /* Links */
   .prose-blog a {
     @apply text-amber-800 dark:text-amber-400;
     text-decoration: underline;
@@ -135,16 +246,14 @@
     text-underline-offset: 3px;
     transition: text-decoration-color 0.15s;
   }
-  .prose-blog a:hover {
-    text-decoration-color: rgb(160 100 30 / 0.85);
-  }
+  .prose-blog a:hover { text-decoration-color: rgb(160 100 30 / 0.85); }
 
   /* Lists */
   .prose-blog ul { @apply list-disc   list-outside pl-6 mb-6 space-y-2; }
   .prose-blog ol { @apply list-decimal list-outside pl-6 mb-6 space-y-2; }
   .prose-blog li { @apply leading-relaxed; }
 
-  /* Blockquote — editorial pull-quote */
+  /* Blockquote */
   .prose-blog blockquote {
     @apply border-l-[3px] border-amber-600/50 dark:border-amber-700/50
            pl-5 py-0.5 my-8
@@ -169,8 +278,7 @@
     @apply text-parchment-400 dark:text-ink-600 text-xs tracking-[0.4em];
   }
 
-  /* Code blocks are rendered by react-syntax-highlighter (see Post.tsx) */
-  /* This handles inline code only */
+  /* Code blocks rendered by react-syntax-highlighter */
   .prose-blog :not(pre) > code {
     @apply bg-parchment-200 dark:bg-ink-800
            text-ink-800 dark:text-ink-100
@@ -194,8 +302,7 @@
   }
   .prose-blog th {
     @apply bg-parchment-200 dark:bg-ink-800
-           font-semibold text-left
-           px-4 py-2.5
+           font-semibold text-left px-4 py-2.5
            text-ink-700 dark:text-ink-100;
     border: 1px solid;
     @apply border-parchment-300 dark:border-ink-700;

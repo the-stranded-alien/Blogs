@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import {
   type Post,
   CATEGORY_COLORS,
-  ACCENT_BORDER,
   ACCENT_HOVER_TEXT,
   ACCENT_TEXT,
   ACCENT_FEATURED_STYLES,
@@ -29,81 +28,32 @@ function ClockIcon() {
 interface PostCardProps { post: Post; featured?: boolean; }
 
 export default function PostCard({ post, featured = false }: PostCardProps) {
-  const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
+  const date = new Date(post.publishedAt);
+  const formattedDate = date.toLocaleDateString('en-US', {
     year: 'numeric', month: 'short', day: 'numeric',
   });
+  const shortDate = date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
 
-  const accentBorder    = ACCENT_BORDER[post.accentColor];
   const accentHoverText = ACCENT_HOVER_TEXT[post.accentColor];
   const accentText      = ACCENT_TEXT[post.accentColor];
   const isWip = post.status === 'in-progress';
 
-  /* ── Featured card ── */
+  /* ── Featured card ──────────────────────────────────────────── */
   if (featured) {
     const { bg, border, hoverBorder } = ACCENT_FEATURED_STYLES[post.accentColor];
+
     const inner = (
       <>
-        <div className={`absolute inset-y-0 left-0 w-1 rounded-l-2xl ${accentBorder} bg-current opacity-50`} />
-        <div className="flex items-center gap-2 mb-4 pl-1">
-          <span className={`text-xs font-semibold uppercase tracking-widest ${accentText}`}>Featured</span>
-          {isWip && (
-            <>
-              <span className="text-parchment-400 dark:text-ink-600">·</span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
-                In Progress
-              </span>
-            </>
-          )}
-          <span className="text-parchment-400 dark:text-ink-600">·</span>
-          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[post.category]}`}>
-            {post.category}
-          </span>
-        </div>
-        {post.series && (
-          <p className="pl-1 mb-2 text-xs text-ink-400 dark:text-ink-500 italic font-serif">
-            {post.series}{post.part !== undefined ? ` · Part ${post.part}` : ''}
-          </p>
-        )}
-        <h2 className={`text-xl sm:text-2xl font-bold font-serif pl-1 mb-3
-                        leading-snug transition-colors
-                        text-ink-900 dark:text-parchment-100
-                        ${accentHoverText}`}>
-          {post.title}
-        </h2>
-        <p className="pl-1 mb-5 text-sm leading-relaxed line-clamp-2 text-ink-500 dark:text-ink-300">
-          {post.excerpt}
-        </p>
-        <div className="pl-1 flex items-center gap-3 text-xs text-ink-400 dark:text-ink-500">
-          <time>{formattedDate}</time>
-          <span>·</span>
-          <span className="inline-flex items-center gap-1"><ClockIcon />{post.readingTime} min</span>
-        </div>
-      </>
-    );
+        {/* Top accent stripe */}
+        <div className={`h-[5px] w-full ${accentText} bg-current`} />
 
-    const cls = `group relative block border ${border} ${hoverBorder} ${bg}
-                 rounded-2xl p-6 sm:p-8 overflow-hidden transition-all hover:shadow-lg
-                 shadow-[0_2px_12px_rgba(0,0,0,0.07)] dark:shadow-none`;
-
-    return post.externalUrl
-      ? <a href={post.externalUrl} target="_blank" rel="noopener noreferrer" className={cls}>{inner}</a>
-      : <Link to={`/blog/${post.slug}`} className={cls}>{inner}</Link>;
-  }
-
-  /* ── Regular card ── */
-  const cls = `group relative block overflow-hidden rounded-xl transition-all
-               bg-parchment-50 dark:bg-ink-900
-               border border-parchment-300 dark:border-ink-800
-               hover:border-parchment-400 dark:hover:border-ink-700
-               shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.10)]
-               dark:shadow-none`;
-
-  const inner = (
-    <>
-      <div className={`absolute inset-y-0 left-0 w-1 ${accentBorder} bg-current`} />
-      <div className="pl-4 pr-5 py-5">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-1.5 flex-wrap">
+        <div className="px-7 sm:px-9 pt-7 pb-8">
+          {/* Meta row */}
+          <div className="flex items-center gap-2 flex-wrap mb-5">
+            <span className={`text-[0.62rem] font-bold uppercase tracking-[0.2em] ${accentText}`}>
+              ◆ Featured
+            </span>
+            <span className="text-parchment-300 dark:text-ink-700 text-xs">|</span>
             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[post.category]}`}>
               {post.category}
             </span>
@@ -113,9 +63,81 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
               </span>
             )}
           </div>
-          <span className="inline-flex items-center gap-1 text-xs text-ink-400 dark:text-ink-500">
-            <ClockIcon />{post.readingTime} min
-          </span>
+
+          {post.series && (
+            <p className="mb-3 text-xs italic font-serif text-ink-400 dark:text-ink-500">
+              {post.series}{post.part !== undefined ? ` · Part ${post.part}` : ''}
+            </p>
+          )}
+
+          <h2 className={`text-2xl sm:text-3xl font-bold font-serif leading-tight mb-4
+                          text-ink-900 dark:text-parchment-100 ${accentHoverText}
+                          transition-colors`}>
+            {post.title}
+          </h2>
+
+          {/* Decorative rule */}
+          <div className={`w-10 h-0.5 mb-5 ${accentText} bg-current opacity-50`} />
+
+          <p className="text-base leading-relaxed line-clamp-3 text-ink-500 dark:text-ink-300 mb-6">
+            {post.excerpt}
+          </p>
+
+          <div className="flex items-center gap-3 text-xs text-ink-400 dark:text-ink-500">
+            <time>{formattedDate}</time>
+            <span>·</span>
+            <span className="inline-flex items-center gap-1">
+              <ClockIcon />{post.readingTime} min read
+            </span>
+            <span className={`ml-auto text-sm font-medium ${accentText} flex items-center gap-1`}>
+              {post.externalUrl ? <>Read article <ExternalIcon /></> : 'Read more →'}
+            </span>
+          </div>
+        </div>
+      </>
+    );
+
+    const cls = `group relative block border ${border} ${hoverBorder} ${bg}
+                 rounded-2xl overflow-hidden transition-all duration-300
+                 shadow-[0_4px_20px_rgba(0,0,0,0.07)]
+                 hover:shadow-[0_12px_40px_rgba(0,0,0,0.14)] hover:-translate-y-1
+                 dark:shadow-none dark:hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)]`;
+
+    return post.externalUrl
+      ? <a href={post.externalUrl} target="_blank" rel="noopener noreferrer" className={cls}>{inner}</a>
+      : <Link to={`/blog/${post.slug}`} className={cls}>{inner}</Link>;
+  }
+
+  /* ── Regular card ───────────────────────────────────────────── */
+  const cls = `group relative block overflow-hidden rounded-xl transition-all duration-300
+               bg-parchment-50 dark:bg-ink-900
+               border border-parchment-300 dark:border-ink-800
+               hover:border-parchment-400 dark:hover:border-ink-700/80
+               shadow-[0_2px_8px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.12)]
+               hover:-translate-y-1
+               dark:shadow-none dark:hover:shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_0_0_1px_rgba(255,255,255,0.04)]`;
+
+  const inner = (
+    <>
+      {/* Top accent stripe */}
+      <div className={`h-[3px] w-full ${accentText} bg-current`} />
+
+      <div className="p-5 pt-4">
+        {/* Top row: category + date */}
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <div className="flex items-center gap-1.5 flex-wrap min-w-0">
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shrink-0 ${CATEGORY_COLORS[post.category]}`}>
+              {post.category}
+            </span>
+            {isWip && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0">
+                In Progress
+              </span>
+            )}
+          </div>
+          <time className="text-[0.68rem] font-mono text-ink-400 dark:text-ink-600 shrink-0 tabular-nums">
+            {shortDate}
+          </time>
         </div>
 
         {post.series && (
@@ -124,18 +146,26 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
           </p>
         )}
 
-        <h3 className={`font-semibold font-serif mb-2 leading-snug line-clamp-2 transition-colors
-                        text-ink-900 dark:text-parchment-100 ${accentHoverText}`}>
+        <h3 className={`font-bold font-serif text-[1.05rem] mb-2.5 leading-snug line-clamp-2
+                        transition-colors text-ink-900 dark:text-parchment-100 ${accentHoverText}`}>
           {post.title}
         </h3>
-        <p className="text-sm leading-relaxed line-clamp-2 mb-4 text-ink-500 dark:text-ink-300">
+
+        <p className="text-sm leading-relaxed line-clamp-3 text-ink-500 dark:text-ink-400 mb-5">
           {post.excerpt}
         </p>
-        <div className="flex items-center justify-between">
-          <time className="text-xs text-ink-400 dark:text-ink-500">{formattedDate}</time>
+
+        <div className="flex items-center justify-between border-t border-parchment-200 dark:border-ink-800 pt-3.5">
+          <span className="inline-flex items-center gap-1 text-xs text-ink-400 dark:text-ink-500">
+            <ClockIcon />{post.readingTime} min read
+          </span>
           {post.externalUrl
-            ? <span className={`flex items-center gap-1 text-xs font-medium ${accentText}`}>Read article <ExternalIcon /></span>
-            : <span className={`text-xs font-medium group-hover:underline ${accentText}`}>Read more →</span>
+            ? <span className={`flex items-center gap-1 text-xs font-semibold ${accentText}`}>
+                Read article <ExternalIcon />
+              </span>
+            : <span className={`text-xs font-semibold ${accentText} group-hover:underline underline-offset-2`}>
+                Read more →
+              </span>
           }
         </div>
       </div>
