@@ -7,7 +7,7 @@ export default function Home() {
   const recent = getRecentPosts(6);
 
   return (
-    <div className="w-[80%] mx-auto py-12 space-y-16">
+    <div className="py-12 space-y-16">
       {/* Hero */}
       <section className="space-y-5 pt-4">
         <div className="inline-flex items-center gap-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full text-xs font-medium tracking-wide">

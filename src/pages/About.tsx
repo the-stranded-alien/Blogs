@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 
 export default function About() {
   return (
-    <div className="w-[80%] mx-auto py-12">
-      <div className="max-w-2xl mx-auto space-y-12">
+    <div className="py-12">
+      <div className="space-y-12">
         {/* Profile */}
         <section className="flex flex-col sm:flex-row gap-6 items-start">
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-400 via-violet-500 to-purple-600 flex items-center justify-center text-white font-bold text-3xl shrink-0">
