@@ -123,13 +123,13 @@
      * 4. Ruled lines        — horizontal stationery lines every 32px
      */
     background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
       radial-gradient(ellipse 70% 60% at 8%  0%,   rgba(210, 165, 60, 0.18) 0%, transparent 70%),
       radial-gradient(ellipse 50% 40% at 92% 100%,  rgba(160, 140, 200, 0.07) 0%, transparent 70%),
       repeating-linear-gradient(
         to bottom,
         transparent 0px, transparent 31px,
-        rgba(120, 90, 30, 0.075) 31px, rgba(120, 90, 30, 0.075) 32px
+        rgba(120, 90, 30, 0.11) 31px, rgba(120, 90, 30, 0.11) 32px
       );
     background-size: 200px 200px, 100% 100%, 100% 100%, 100% 100%;
     background-repeat: repeat, no-repeat, no-repeat, no-repeat;
@@ -144,10 +144,10 @@
    */
   .dark body {
     background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2020/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2020/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.10'/%3E%3C/svg%3E"),
       radial-gradient(ellipse 80% 50% at 50% 0%,   rgba(196, 150, 50, 0.21) 0%, transparent 65%),
       radial-gradient(ellipse 130% 100% at 50% 50%, transparent 25%, rgba(0, 0, 0, 0.62) 100%),
-      radial-gradient(circle, rgba(196, 160, 74, 0.075) 1px, transparent 1px);
+      radial-gradient(circle, rgba(196, 160, 74, 0.11) 1px, transparent 1px);
     background-size: 200px 200px, 100% 100%, 100% 100%, 26px 26px;
     background-repeat: repeat, no-repeat, no-repeat, repeat;
   }
@@ -162,20 +162,20 @@
    */
   .sepia body {
     background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
       radial-gradient(ellipse 70% 55% at 10% 0%,    rgba(170, 130, 70, 0.16) 0%, transparent 65%),
       radial-gradient(ellipse 50% 40% at 90% 100%,  rgba(130, 100, 50, 0.09) 0%, transparent 65%),
       repeating-linear-gradient(
         45deg,
         transparent 0px, transparent 19px,
-        rgba(100, 76, 44, 0.07) 19px, rgba(100, 76, 44, 0.07) 20px
+        rgba(100, 76, 44, 0.12) 19px, rgba(100, 76, 44, 0.12) 20px
       ),
       repeating-linear-gradient(
         135deg,
         transparent 0px, transparent 19px,
-        rgba(100, 76, 44, 0.07) 19px, rgba(100, 76, 44, 0.07) 20px
+        rgba(100, 76, 44, 0.12) 19px, rgba(100, 76, 44, 0.12) 20px
       );
-    background-size: 200px 200px, 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+    background-size: 200px 200px, 100% 100%, 100% 100%, 24px 24px, 24px 24px;
     background-repeat: repeat, no-repeat, no-repeat, repeat, repeat;
   }
 
