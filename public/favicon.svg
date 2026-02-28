@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background: warm charcoal -->
+  <rect width="32" height="32" rx="6" fill="#1A1917"/>
+  <!-- Gold border -->
+  <rect x="1" y="1" width="30" height="30" rx="5.5" fill="none" stroke="#C4A04A" stroke-width="1.2" opacity="0.75"/>
+  <!-- SG monogram -->
+  <text
+    x="16"
+    y="16"
+    text-anchor="middle"
+    dominant-baseline="central"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-weight="700"
+    font-size="14"
+    letter-spacing="-0.5"
+    fill="#C4A04A"
+  >SG</text>
+</svg>
