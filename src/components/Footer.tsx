@@ -33,7 +33,7 @@ export default function Footer() {
           </div>
 
           {/* Nav links — centred */}
-          <nav className="flex items-center justify-center gap-8">
+          <nav className="flex flex-wrap items-center justify-center gap-8">
             {navLinks.map(({ to, label }) => (
               <Link key={to} to={to}
                 className="text-xs font-semibold uppercase tracking-[0.18em]
@@ -43,12 +43,26 @@ export default function Footer() {
                 {label}
               </Link>
             ))}
-            <a href="https://github.com/sahilgupta" target="_blank" rel="noopener noreferrer"
+            <a href="https://portfolio.guptasahil.in" target="_blank" rel="noopener noreferrer"
+              className="text-xs font-semibold uppercase tracking-[0.18em]
+                         text-ink-400 dark:text-ink-500
+                         hover:text-ink-900 dark:hover:text-ink-100
+                         transition-colors">
+              Portfolio
+            </a>
+            <a href="https://github.com/the-stranded-alien" target="_blank" rel="noopener noreferrer"
               className="text-xs font-semibold uppercase tracking-[0.18em]
                          text-ink-400 dark:text-ink-500
                          hover:text-ink-900 dark:hover:text-ink-100
                          transition-colors">
               GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/sahilgupta1611" target="_blank" rel="noopener noreferrer"
+              className="text-xs font-semibold uppercase tracking-[0.18em]
+                         text-ink-400 dark:text-ink-500
+                         hover:text-ink-900 dark:hover:text-ink-100
+                         transition-colors">
+              LinkedIn
             </a>
           </nav>
 
