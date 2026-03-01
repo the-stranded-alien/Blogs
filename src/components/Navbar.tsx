@@ -37,8 +37,19 @@ export default function Navbar() {
       <nav className="w-[80%] mx-auto h-16 flex items-center justify-between gap-4">
 
         {/* Logo */}
-        <Link to="/" className="font-bold text-xl font-serif text-ink-900 dark:text-parchment-100 tracking-tight shrink-0 group">
-          sahil<span className="text-[#C4A04A] group-hover:text-amber-500 transition-colors">.</span>blog
+        <Link to="/" className="flex items-center gap-2 font-bold text-xl font-serif text-ink-900 dark:text-parchment-100 tracking-tight shrink-0 group">
+          <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true" className="shrink-0 transition-colors">
+            <rect width="32" height="32" rx="6" className="fill-ink-800 dark:fill-ink-600"/>
+            <rect x="1" y="1" width="30" height="30" rx="5.5" fill="none" stroke="#C4A04A" strokeWidth="1.4" opacity="0.85"/>
+            <text
+              x="16" y="16"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill="#C4A04A"
+              style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontWeight: 700, fontSize: '13px', letterSpacing: '-0.5px' }}
+            >SG</text>
+          </svg>
+          <span>sahil<span className="text-[#C4A04A] group-hover:text-amber-500 transition-colors">.</span>blog</span>
         </Link>
 
         {/* Desktop nav links */}

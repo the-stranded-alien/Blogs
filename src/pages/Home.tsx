@@ -11,7 +11,7 @@ export default function Home() {
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section className="relative">
-        {/* Editorial masthead line */}
+        {/* Editorial masthead line — full width */}
         <div className="flex items-center gap-4 mb-10">
           <span className="text-[0.58rem] font-mono font-bold uppercase tracking-[0.28em] text-ink-400 dark:text-ink-600 shrink-0">
             Est. 2026
@@ -123,6 +123,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (

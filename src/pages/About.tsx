@@ -7,11 +7,13 @@ export default function About() {
 
         {/* Profile */}
         <section className="flex flex-col sm:flex-row gap-6 items-start">
-          <div className="w-20 h-20 rounded-2xl shrink-0 flex items-center justify-center
-                          bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500
-                          text-white font-bold text-3xl font-serif">
-            S
-          </div>
+          <svg width="80" height="80" viewBox="0 0 32 32" aria-hidden="true" className="shrink-0">
+            <rect width="32" height="32" rx="6" fill="#1A1917"/>
+            <rect x="1" y="1" width="30" height="30" rx="5.5" fill="none" stroke="#C4A04A" strokeWidth="1.2" opacity="0.75"/>
+            <text x="16" y="16" textAnchor="middle" dominantBaseline="central"
+              fontFamily="Georgia, 'Times New Roman', serif"
+              fontWeight="700" fontSize="14" letterSpacing="-0.5" fill="#C4A04A">SG</text>
+          </svg>
           <div className="space-y-3">
             <div>
               <h1 className="text-2xl font-bold font-serif text-ink-900 dark:text-parchment-100">
@@ -28,13 +30,17 @@ export default function About() {
               musings about life.
             </p>
             <div className="flex items-center gap-4 pt-1">
-              <a href="https://github.com/sahilgupta" target="_blank" rel="noopener noreferrer"
+              <a href="https://portfolio.guptasahil.in" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-sm text-ink-400 hover:text-ink-800 dark:hover:text-ink-100 transition-colors">
+                <PortfolioIcon /> Portfolio
+              </a>
+              <a href="https://github.com/the-stranded-alien" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-sm text-ink-400 hover:text-ink-800 dark:hover:text-ink-100 transition-colors">
                 <GitHubIcon /> GitHub
               </a>
-              <a href="https://twitter.com/sahilgupta" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.linkedin.com/in/sahilgupta1611" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-sm text-ink-400 hover:text-ink-800 dark:hover:text-ink-100 transition-colors">
-                <XIcon /> Twitter/X
+                <LinkedInIcon /> LinkedIn
               </a>
             </div>
           </div>
@@ -44,8 +50,8 @@ export default function About() {
         <section className="space-y-4">
           <SectionLabel>What I write about</SectionLabel>
           <div className="grid sm:grid-cols-2 gap-3">
-            {aboutTopics.map(({ category, description }) => (
-              <Link key={category} to={`/blog?category=${category}`}
+            {aboutTopics.map(({ label, category, description }) => (
+              <Link key={label} to={`/blog?category=${category}`}
                 className="group block p-4 rounded-xl transition-all
                            bg-parchment-50 dark:bg-ink-900
                            border border-parchment-300 dark:border-ink-800
@@ -55,7 +61,7 @@ export default function About() {
                                 text-ink-900 dark:text-parchment-100
                                 group-hover:text-amber-700 dark:group-hover:text-amber-400
                                 transition-colors">
-                  {category}
+                  {label}
                 </div>
                 <div className="text-xs text-ink-500 dark:text-ink-400 leading-relaxed">
                   {description}
@@ -117,12 +123,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 const aboutTopics = [
-  { category: 'Engineering', description: 'System design, architecture decisions, distributed systems, and software craft.' },
-  { category: 'Technology',  description: 'Languages, frameworks, tools, and trends shaping how we build software.' },
-  { category: 'Design',      description: 'UI design, design systems, and the intersection of design and engineering.' },
-  { category: 'Tutorial',    description: 'Practical, code-first guides on specific tools, libraries, and techniques.' },
-  { category: 'Career',      description: 'Growth, leadership, navigating the industry, and lessons from experience.' },
-  { category: 'Life',        description: 'Reflections on productivity, focus, wellbeing, and life outside of work.' },
+  { label: 'Software Engineering', category: 'Engineering', description: 'Architecture decisions, distributed systems, code quality, and the craft of building software.' },
+  { label: 'Technology',           category: 'Technology',  description: 'Languages, frameworks, tools, and trends shaping how we build software.' },
+  { label: 'System Design',        category: 'Engineering', description: 'Scalability, reliability, trade-offs, and patterns for designing systems that last.' },
+  { label: 'Tutorial',             category: 'Tutorial',    description: 'Practical, code-first guides on specific tools, libraries, and techniques.' },
+  { label: 'Career',               category: 'Career',      description: 'Growth, leadership, navigating the industry, and lessons from experience.' },
+  { label: 'Life',                 category: 'Life',        description: 'Reflections on productivity, focus, wellbeing, and life outside of work.' },
 ];
 
 const principles = [
@@ -132,6 +138,14 @@ const principles = [
   { title: 'Opinionated', desc: "I share my perspective, not just a survey of options. You can disagree — that's good." },
 ];
 
+function PortfolioIcon() {
+  return (
+    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  );
+}
 function GitHubIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -139,10 +153,10 @@ function GitHubIcon() {
     </svg>
   );
 }
-function XIcon() {
+function LinkedInIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
     </svg>
   );
 }

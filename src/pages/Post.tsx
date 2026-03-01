@@ -1,5 +1,5 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
@@ -14,6 +14,136 @@ import {
 } from '../data/posts';
 import PostCard from '../components/PostCard';
 import { useTheme } from '../context/ThemeContext';
+
+/* ── Reading preferences ─────────────────────────────────────── */
+const FONT_SIZES   = ['0.95rem', '1.125rem', '1.25rem', '1.375rem'];
+const FONT_WEIGHTS = ['400', '500'];
+const LINE_HEIGHTS = ['1.75', '1.9', '2.15'];
+
+type ReadingPrefs = { sizeIdx: number; weightIdx: number; spacingIdx: number };
+const DEFAULT_PREFS: ReadingPrefs = { sizeIdx: 1, weightIdx: 0, spacingIdx: 1 };
+
+function useReadingPrefs() {
+  const [prefs, setPrefs] = useState<ReadingPrefs>(() => {
+    try {
+      const s = localStorage.getItem('blog-reading-prefs');
+      if (s) return JSON.parse(s) as ReadingPrefs;
+    } catch {}
+    return DEFAULT_PREFS;
+  });
+  const update = (next: ReadingPrefs) => {
+    setPrefs(next);
+    localStorage.setItem('blog-reading-prefs', JSON.stringify(next));
+  };
+  return { prefs, update };
+}
+
+function ReadingControls({ prefs, update }: { prefs: ReadingPrefs; update: (p: ReadingPrefs) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, []);
+
+  const btnBase = 'flex-1 py-1.5 rounded text-xs transition-colors';
+  const btnActive = 'bg-ink-900 dark:bg-parchment-100 text-parchment-50 dark:text-ink-900 font-medium';
+  const btnIdle = 'text-ink-500 dark:text-ink-400 hover:bg-parchment-200 dark:hover:bg-ink-800';
+
+  return (
+    <div ref={ref} className="fixed bottom-6 right-4 z-40 flex flex-col items-end gap-2">
+
+      {/* Popover */}
+      {open && (
+        <div className="bg-parchment-50 dark:bg-ink-900
+                        border border-parchment-300 dark:border-ink-700
+                        rounded-2xl shadow-xl p-4 w-52 space-y-4">
+
+          {/* Font size */}
+          <div className="space-y-2">
+            <p className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-ink-400 dark:text-ink-500">
+              Text size
+            </p>
+            <div className="flex gap-1">
+              {(['0.8rem','0.95rem','1.1rem','1.3rem'] as const).map((btnSize, i) => (
+                <button key={i} onClick={() => update({ ...prefs, sizeIdx: i })}
+                  style={{ fontSize: btnSize }}
+                  className={`${btnBase} font-serif ${prefs.sizeIdx === i ? btnActive : btnIdle}`}>
+                  A
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Font weight */}
+          <div className="space-y-2">
+            <p className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-ink-400 dark:text-ink-500">
+              Weight
+            </p>
+            <div className="flex gap-1">
+              {['Regular', 'Medium'].map((label, i) => (
+                <button key={i} onClick={() => update({ ...prefs, weightIdx: i })}
+                  style={{ fontWeight: FONT_WEIGHTS[i] }}
+                  className={`${btnBase} ${prefs.weightIdx === i ? btnActive : btnIdle}`}>
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Line spacing */}
+          <div className="space-y-2">
+            <p className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-ink-400 dark:text-ink-500">
+              Spacing
+            </p>
+            <div className="flex gap-1">
+              {['Compact', 'Default', 'Loose'].map((label, i) => (
+                <button key={i} onClick={() => update({ ...prefs, spacingIdx: i })}
+                  className={`${btnBase} ${prefs.spacingIdx === i ? btnActive : btnIdle}`}>
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Reset */}
+          <button
+            onClick={() => update(DEFAULT_PREFS)}
+            className="w-full text-[0.62rem] text-ink-400 dark:text-ink-600
+                       hover:text-ink-700 dark:hover:text-ink-300 transition-colors">
+            Reset to defaults
+          </button>
+        </div>
+      )}
+
+      {/* Toggle button */}
+      <button
+        onClick={() => setOpen(o => !o)}
+        title="Reading preferences"
+        aria-label="Reading preferences"
+        className={`w-10 h-10 rounded-full flex items-center justify-center
+                    font-serif font-bold text-sm
+                    border shadow-sm transition-all
+                    ${open
+                      ? 'bg-ink-900 dark:bg-parchment-100 text-parchment-50 dark:text-ink-900 border-ink-900 dark:border-parchment-100'
+                      : 'bg-parchment-50 dark:bg-ink-900 text-ink-700 dark:text-ink-200 border-parchment-300 dark:border-ink-700 hover:border-parchment-400 dark:hover:border-ink-500 hover:shadow'
+                    }`}>
+        Aa
+      </button>
+    </div>
+  );
+}
 
 /* ── Reading progress — antique gold ribbon ───────────────────── */
 function ReadingProgress() {
@@ -110,6 +240,7 @@ function CodeBlock({ language, children }: { language: string; children: string 
 export default function Post() {
   const { slug } = useParams<{ slug: string }>();
   const post = slug ? getPostBySlug(slug) : undefined;
+  const { prefs, update } = useReadingPrefs();
 
   useEffect(() => {
     if (post?.externalUrl) window.location.replace(post.externalUrl);
@@ -143,6 +274,7 @@ export default function Post() {
   return (
     <>
       <ReadingProgress />
+      <ReadingControls prefs={prefs} update={update} />
 
       <div className="py-12">
         {/* ── Reading column ─────────────────────────────────────── */}
@@ -224,11 +356,13 @@ export default function Post() {
               {/* Byline */}
               <div className="flex items-center gap-3 py-5
                               border-y border-parchment-300 dark:border-ink-800">
-                <div className="w-9 h-9 rounded-full shrink-0 flex items-center justify-center
-                                bg-gradient-to-br from-amber-400 to-orange-500
-                                text-white font-bold text-sm font-serif">
-                  S
-                </div>
+                <svg width="36" height="36" viewBox="0 0 32 32" aria-hidden="true" className="shrink-0">
+                  <rect width="32" height="32" rx="6" fill="#1A1917"/>
+                  <rect x="1" y="1" width="30" height="30" rx="5.5" fill="none" stroke="#C4A04A" strokeWidth="1.2" opacity="0.75"/>
+                  <text x="16" y="16" textAnchor="middle" dominantBaseline="central"
+                    fontFamily="Georgia, 'Times New Roman', serif"
+                    fontWeight="700" fontSize="14" letterSpacing="-0.5" fill="#C4A04A">SG</text>
+                </svg>
                 <div>
                   <p className="text-sm font-medium text-ink-800 dark:text-ink-100">Sahil Gupta</p>
                   <div className="flex items-center gap-2 text-xs text-ink-400 dark:text-ink-400">
@@ -247,7 +381,11 @@ export default function Post() {
             </header>
 
             {/* ── Body ─────────────────────────────────────────── */}
-            <div className="prose-blog">
+            <div className="prose-blog" style={{
+              fontSize:   FONT_SIZES[prefs.sizeIdx],
+              fontWeight: FONT_WEIGHTS[prefs.weightIdx],
+              lineHeight: LINE_HEIGHTS[prefs.spacingIdx],
+            }}>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkBreaks]}
                 components={{
